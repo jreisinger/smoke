@@ -15,6 +15,7 @@ func TestCountNonEmptyLines(t *testing.T) {
 		{input: []byte("line 1\nline 2\nline 3\n"), want: 3},
 		{input: []byte(""), want: 0},
 		{input: []byte("\n"), want: 0},
+		{input: []byte("\n\n"), want: 0},
 	}
 
 	for i, tc := range testCases {
