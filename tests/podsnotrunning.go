@@ -18,7 +18,7 @@ func PodsNotRunning(host string, config []byte) (string, error) {
 		return "", fmt.Errorf("unmarshal NonRunningPods config: %v", err)
 	}
 
-	cmd := "kubectl get pods --field-selector status.phase!=Running --all-namespaces"
+	cmd := "kubectl get pods --field-selector status.phase!=Running --all-namespaces --no-headers"
 	out, err := helper.Ssh(host, cmd)
 	if err != nil {
 		return "", err
