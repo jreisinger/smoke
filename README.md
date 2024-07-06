@@ -8,7 +8,7 @@ go install github.com/jreisinger/smoke@latest
 
 ## Usage
 
-create config file containing tests for one or more hosts
+Create config file containing tests for one or more hosts
 
 ```json
 {
@@ -31,15 +31,15 @@ create config file containing tests for one or more hosts
 }
 ```
 
-run the tests
+Run the tests (exit code is the number of failed tests)
 
 ```sh
 ❯ smoke -v
-ok   HelmReleases on some.host.example.com
+fail HelmReleases on some.host.example.com: ssh "helm ls -A": failed to run: Process exited with status 127
 ok   HttpsGet on some.host.example.com
 ok   OpenPorts on some.host.example.com
 fail OsRelease on some.host.example.com: want VERSION_ID="22.04", got VERSION_ID="20.04"
 ok   PodsNotRunning on some.host.example.com
 ✗ echo $?
-1
+2
 ```
