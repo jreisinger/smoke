@@ -23,6 +23,9 @@ create config file containing tests for one or more hosts
     "OsRelease": {
       "ID": "ubuntu",
       "VERSION_ID": "\"20.04\""
+    },
+    "PodsNotRunning": {
+      "Count": 0
     }
   }
 }
@@ -36,6 +39,7 @@ ok   HelmReleases on some.host.example.com
 ok   HttpsGet on some.host.example.com
 ok   OpenPorts on some.host.example.com
 fail OsRelease on some.host.example.com: want VERSION_ID="22.04", got VERSION_ID="20.04"
+ok   PodsNotRunning on some.host.example.com
 ✗ echo $?
 1
 ```
