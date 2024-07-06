@@ -35,16 +35,16 @@ func Run(configFile string, verbose bool) (failed int, err error) {
 				return 0, fmt.Errorf("no such test: %s", testName)
 			}
 
-			faileReason, err := testFunc(host, testConfig)
+			failedReason, err := testFunc(host, testConfig)
 			if err != nil {
 				return 0, fmt.Errorf("run test %s against %s: %v", testName, host, err)
 			}
 
-			if faileReason != "" {
+			if failedReason != "" {
 				failed++
 				msg := fmt.Sprintf("fail %s on %s", testName, host)
 				if verbose {
-					msg += fmt.Sprintf(": %s", faileReason)
+					msg += fmt.Sprintf(": %s", failedReason)
 				}
 				fmt.Println(msg)
 			} else if verbose {
