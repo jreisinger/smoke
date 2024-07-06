@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jreisinger/smoke/ssh"
+	"github.com/jreisinger/smoke/helper"
 )
 
 type osRelease struct {
@@ -20,7 +20,7 @@ func OsRelease(host string, config []byte) (string, error) {
 		return "", fmt.Errorf("unmarshal OsRelease config: %v", err)
 	}
 
-	out, err := ssh.Ssh(host, "cat /etc/os-release")
+	out, err := helper.Ssh(host, "cat /etc/os-release")
 	if err != nil {
 		return "", err
 	}

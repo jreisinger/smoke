@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jreisinger/smoke/ssh"
+	"github.com/jreisinger/smoke/helper"
 )
 
 type helmReleases struct {
@@ -19,7 +19,7 @@ func HelmReleases(host string, config []byte) (string, error) {
 		return "", fmt.Errorf("unmarshal HelmReleases config: %v", err)
 	}
 
-	out, err := ssh.Ssh(host, "helm ls -A")
+	out, err := helper.Ssh(host, "helm ls -A")
 	if err != nil {
 		return "", err
 	}

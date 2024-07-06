@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/jreisinger/smoke/helper"
-	"github.com/jreisinger/smoke/ssh"
 )
 
 type podsNotRunning struct {
@@ -20,7 +19,7 @@ func PodsNotRunning(host string, config []byte) (string, error) {
 	}
 
 	cmd := "kubectl get pods --field-selector status.phase!=Running --all-namespaces"
-	out, err := ssh.Ssh(host, cmd)
+	out, err := helper.Ssh(host, cmd)
 	if err != nil {
 		return "", err
 	}
