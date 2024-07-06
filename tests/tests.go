@@ -16,7 +16,6 @@ var Tests = map[string]func(host string, config []byte) (string, error){
 }
 
 type test struct {
-	host         string
 	name         string
 	failedReason string
 	err          error
@@ -36,6 +35,8 @@ func Run(configFile string) (failed int, err error) {
 	}
 
 	for host, testsConfig := range config {
+		fmt.Printf("--- %s ---\n", host)
+
 		ch := make(chan test, len(testsConfig))
 
 		for testName, testConfig := range testsConfig {
@@ -46,7 +47,6 @@ func Run(configFile string) (failed int, err error) {
 
 			go func(host, testName string, testConfig []byte) {
 				var t test
-				t.host = host
 				t.name = testName
 				t.failedReason, t.err = testFunc(host, testConfig)
 				ch <- t
@@ -56,7 +56,7 @@ func Run(configFile string) (failed int, err error) {
 		for range testsConfig {
 			t := <-ch
 			if t.err != nil {
-				return 0, fmt.Errorf("run test %s against %s: %v", t.name, t.host, t.err)
+				return 0, fmt.Errorf("run test %s against %s: %v", t.name, host, t.err)
 			}
 			if t.failedReason != "" {
 				failed++
@@ -71,12 +71,12 @@ func Run(configFile string) (failed int, err error) {
 }
 
 func printFail(t test) {
-	msg := fmt.Sprintf("fail %s on %s", t.name, t.host)
+	msg := fmt.Sprintf("fail %s", t.name)
 	msg += fmt.Sprintf(": %s", t.failedReason)
 	fmt.Println(msg)
 }
 
 func printOk(t test) {
-	msg := fmt.Sprintf("ok   %s on %s", t.name, t.host)
+	msg := fmt.Sprintf("ok   %s", t.name)
 	fmt.Println(msg)
 }
