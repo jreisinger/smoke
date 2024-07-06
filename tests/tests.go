@@ -79,6 +79,9 @@ func printFail(t test, verbose bool) {
 }
 
 func printOk(t test, verbose bool) {
+	if !verbose {
+		return
+	}
 	msg := fmt.Sprintf("ok   %s on %s", t.name, t.host)
 	fmt.Println(msg)
 }
