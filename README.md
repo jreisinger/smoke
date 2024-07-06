@@ -13,17 +13,17 @@ create config file containing tests for one or more hosts
 ```json
 {
   "some.host.example.com": {
-      "HelmReleases": {
-        "Count": 2
-      },
-      "HttpsGet": {
-        "StatusCode": 200
-      },
-      "OpenPorts": ["22", "443"],
-      "OsRelease": {
-        "ID": "ubuntu",
-        "VERSION_ID": "\"20.04\""
-      }
+    "HelmReleases": {
+      "Count": 2
+    },
+    "HttpsGet": {
+      "StatusCode": 200
+    },
+    "OpenPorts": ["22", "443"],
+    "OsRelease": {
+      "ID": "ubuntu",
+      "VERSION_ID": "\"20.04\""
+    }
   }
 }
 ```
