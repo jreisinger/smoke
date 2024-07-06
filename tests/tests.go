@@ -8,10 +8,11 @@ import (
 
 var Tests = map[string]func(host string, config []byte) (string, error){
 	// Test name: test func.
-	"HelmReleases": HelmReleases,
-	"HttpsGet":     HttpsGet,
-	"OpenPorts":    OpenPorts,
-	"OsRelease":    OsRelease,
+	"HelmReleases":   HelmReleases,
+	"HttpsGet":       HttpsGet,
+	"OpenPorts":      OpenPorts,
+	"OsRelease":      OsRelease,
+	"PodsNotRunning": PodsNotRunning,
 }
 
 func Run(configFile string, verbose bool) (failed int, err error) {
