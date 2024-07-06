@@ -34,7 +34,7 @@ Create config file containing tests for one or more hosts
 Run the tests (exit code is the number of failed tests)
 
 ```sh
-❯ smoke -v
+❯ smoke
 fail HelmReleases on some.host.example.com: ssh "helm ls -A": failed to run: Process exited with status 127
 ok   HttpsGet on some.host.example.com
 ok   OpenPorts on some.host.example.com

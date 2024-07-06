@@ -22,10 +22,9 @@ func init() {
 
 func main() {
 	c := flag.String("c", defaultConfigFile, "config file")
-	v := flag.Bool("v", false, "be verbose")
 	flag.Parse()
 
-	failed, err := tests.Run(*c, *v)
+	failed, err := tests.Run(*c)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "smoke: run tests: %v\n", err)
 		os.Exit(1)

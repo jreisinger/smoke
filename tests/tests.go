@@ -22,7 +22,7 @@ type test struct {
 	err          error
 }
 
-func Run(configFile string, verbose bool) (failed int, err error) {
+func Run(configFile string) (failed int, err error) {
 	b, err := os.ReadFile(configFile)
 	if err != nil {
 		return 0, fmt.Errorf("read config file: %v", err)
@@ -60,9 +60,9 @@ func Run(configFile string, verbose bool) (failed int, err error) {
 			}
 			if t.failedReason != "" {
 				failed++
-				printFail(t, verbose)
+				printFail(t)
 			} else {
-				printOk(t, verbose)
+				printOk(t)
 			}
 		}
 	}
@@ -70,18 +70,13 @@ func Run(configFile string, verbose bool) (failed int, err error) {
 	return failed, nil
 }
 
-func printFail(t test, verbose bool) {
+func printFail(t test) {
 	msg := fmt.Sprintf("fail %s on %s", t.name, t.host)
-	if verbose {
-		msg += fmt.Sprintf(": %s", t.failedReason)
-	}
+	msg += fmt.Sprintf(": %s", t.failedReason)
 	fmt.Println(msg)
 }
 
-func printOk(t test, verbose bool) {
-	if !verbose {
-		return
-	}
+func printOk(t test) {
 	msg := fmt.Sprintf("ok   %s on %s", t.name, t.host)
 	fmt.Println(msg)
 }
