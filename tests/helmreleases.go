@@ -19,9 +19,10 @@ func HelmReleases(host string, config []byte) (string, error) {
 		return "", fmt.Errorf("unmarshal HelmReleases config: %v", err)
 	}
 
-	out, err := helper.Ssh(host, "helm ls -A")
+	cmd := "helm ls -A"
+	out, err := helper.Ssh(host, cmd)
 	if err != nil {
-		return "", err
+		return fmt.Sprintf("ssh %q: %s", cmd, err), nil
 	}
 
 	lines := strings.Split(string(out), "\n")

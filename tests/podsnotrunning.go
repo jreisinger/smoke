@@ -21,7 +21,7 @@ func PodsNotRunning(host string, config []byte) (string, error) {
 	cmd := "kubectl get pods --field-selector status.phase!=Running --all-namespaces --no-headers"
 	out, err := helper.Ssh(host, cmd)
 	if err != nil {
-		return "", err
+		return fmt.Sprintf("ssh %q: %s", cmd, err), nil
 	}
 
 	podsNotRunning := helper.CountNonEmptyLines(out)

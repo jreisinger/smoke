@@ -20,9 +20,10 @@ func OsRelease(host string, config []byte) (string, error) {
 		return "", fmt.Errorf("unmarshal OsRelease config: %v", err)
 	}
 
-	out, err := helper.Ssh(host, "cat /etc/os-release")
+	cmd := "cat /etc/os-release"
+	out, err := helper.Ssh(host, cmd)
 	if err != nil {
-		return "", err
+		return fmt.Sprintf("ssh %q: %s", cmd, err), nil
 	}
 	for _, line := range strings.Split(string(out), "\n") {
 		parts := strings.Split(line, "=")
