@@ -14,7 +14,7 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func Ssh(hostname, command string) (stdout []byte, err error) {
+func Ssh(host, command string) (stdout []byte, err error) {
 	// Load user's SSH config file
 	f, err := os.Open(os.ExpandEnv("$HOME/.ssh/config"))
 	sshConfig, err := ssh_config.Decode(f)
@@ -23,11 +23,11 @@ func Ssh(hostname, command string) (stdout []byte, err error) {
 	}
 
 	// Get the values from username's SSH config file
-	username, err := sshConfig.Get(hostname, "User")
+	username, err := sshConfig.Get(host, "User")
 	if err != nil {
 		return nil, fmt.Errorf("failed to get ssh User from config: %s", err)
 	}
-	identityFile, err := sshConfig.Get(hostname, "IdentityFile")
+	identityFile, err := sshConfig.Get(host, "IdentityFile")
 	if err != nil {
 		return nil, fmt.Errorf("failed to get ssh IndentityFile from config: %s", err)
 	}
@@ -69,7 +69,7 @@ func Ssh(hostname, command string) (stdout []byte, err error) {
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 		Timeout:         5 * time.Second,
 	}
-	addr := net.JoinHostPort(hostname, "22")
+	addr := net.JoinHostPort(host, "22")
 	client, err := ssh.Dial("tcp", addr, config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to dial %s: %v", addr, err)
