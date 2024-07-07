@@ -13,8 +13,7 @@ type podsNotRunning struct {
 
 func PodsNotRunning(hostName string, config []byte) (string, error) {
 	var pnr podsNotRunning
-	err := json.Unmarshal(config, &pnr)
-	if err != nil {
+	if err := json.Unmarshal(config, &pnr); err != nil {
 		return "", fmt.Errorf("unmarshal NonRunningPods config: %v", err)
 	}
 

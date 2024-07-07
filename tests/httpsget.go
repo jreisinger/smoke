@@ -12,8 +12,7 @@ type httpsGet struct {
 
 func HttpsGet(hostName string, config []byte) (string, error) {
 	var hg httpsGet
-	err := json.Unmarshal(config, &hg)
-	if err != nil {
+	if err := json.Unmarshal(config, &hg); err != nil {
 		return "", fmt.Errorf("unmarshal HttpsGet config: %v", err)
 	}
 

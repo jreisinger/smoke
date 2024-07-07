@@ -15,8 +15,7 @@ type osRelease struct {
 
 func OsRelease(hostName string, config []byte) (string, error) {
 	var os osRelease
-	err := json.Unmarshal(config, &os)
-	if err != nil {
+	if err := json.Unmarshal(config, &os); err != nil {
 		return "", fmt.Errorf("unmarshal OsRelease config: %v", err)
 	}
 

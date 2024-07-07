@@ -11,8 +11,7 @@ type openPorts []string
 
 func OpenPorts(hostName string, config []byte) (string, error) {
 	var op openPorts
-	err := json.Unmarshal(config, &op)
-	if err != nil {
+	if err := json.Unmarshal(config, &op); err != nil {
 		return "", fmt.Errorf("unmarshal OpenPorts config: %v", err)
 	}
 

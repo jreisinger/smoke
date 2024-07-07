@@ -14,8 +14,7 @@ type helmReleases struct {
 
 func HelmReleases(hostName string, config []byte) (string, error) {
 	var hr helmReleases
-	err := json.Unmarshal(config, &hr)
-	if err != nil {
+	if err := json.Unmarshal(config, &hr); err != nil {
 		return "", fmt.Errorf("unmarshal HelmReleases config: %v", err)
 	}
 
