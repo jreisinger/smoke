@@ -1,3 +1,4 @@
+// Package tests contains smoke tests you can run against a host.
 package tests
 
 import (
@@ -6,8 +7,14 @@ import (
 	"os"
 )
 
-var Tests = map[string]func(host string, config []byte) (string, error){
-	// Test name: test func.
+type hostName string
+type testName string
+
+type ConfigFile map[hostName]map[testName]json.RawMessage
+
+type TestFunc func(hostName string, config []byte) (failedReason string, err error)
+
+var Available = map[testName]TestFunc{
 	"HelmReleases":   HelmReleases,
 	"HttpsGet":       HttpsGet,
 	"OpenPorts":      OpenPorts,
@@ -21,39 +28,37 @@ type test struct {
 	err          error
 }
 
-func Run(configFile string) (failed int, err error) {
-	b, err := os.ReadFile(configFile)
+func Run(configFilename string) (failed int, err error) {
+	b, err := os.ReadFile(configFilename)
 	if err != nil {
 		return 0, fmt.Errorf("read config file: %v", err)
 	}
 
-	// host -> tests config
-	var config map[string]map[string]json.RawMessage
-
-	if err := json.Unmarshal(b, &config); err != nil {
+	var configFile ConfigFile
+	if err := json.Unmarshal(b, &configFile); err != nil {
 		return 0, fmt.Errorf("unmarshal config file: %v", err)
 	}
 
-	for host, testsConfig := range config {
+	for host, tests := range configFile {
 		fmt.Printf("--- %s ---\n", host)
 
-		ch := make(chan test, len(testsConfig))
+		ch := make(chan test, len(tests))
 
-		for testName, testConfig := range testsConfig {
-			testFunc, ok := Tests[testName]
+		for testName, testConfig := range tests {
+			testFunc, ok := Available[testName]
 			if !ok {
 				return 0, fmt.Errorf("no such test: %s", testName)
 			}
 
-			go func(host, testName string, testConfig []byte) {
+			go func(testName, host string, testConfig []byte) {
 				var t test
 				t.name = testName
 				t.failedReason, t.err = testFunc(host, testConfig)
 				ch <- t
-			}(host, testName, testConfig)
+			}(string(testName), string(host), testConfig)
 		}
 
-		for range testsConfig {
+		for range tests {
 			t := <-ch
 			if t.err != nil {
 				return 0, fmt.Errorf("run test %s against %s: %v", t.name, host, t.err)

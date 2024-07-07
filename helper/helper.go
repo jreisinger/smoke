@@ -1,3 +1,4 @@
+// Package helper contains functions used to run smoke tests.
 package helper
 
 import (

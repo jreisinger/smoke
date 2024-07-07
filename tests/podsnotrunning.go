@@ -11,7 +11,7 @@ type podsNotRunning struct {
 	Count int
 }
 
-func PodsNotRunning(host string, config []byte) (string, error) {
+func PodsNotRunning(hostName string, config []byte) (string, error) {
 	var pnr podsNotRunning
 	err := json.Unmarshal(config, &pnr)
 	if err != nil {
@@ -19,7 +19,7 @@ func PodsNotRunning(host string, config []byte) (string, error) {
 	}
 
 	cmd := "kubectl get pods --field-selector status.phase!=Running --all-namespaces --no-headers"
-	out, err := helper.Ssh(host, cmd)
+	out, err := helper.Ssh(hostName, cmd)
 	if err != nil {
 		return fmt.Sprintf("ssh %q: %s", cmd, err), nil
 	}

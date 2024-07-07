@@ -13,7 +13,7 @@ type osRelease struct {
 	VERSION_ID string
 }
 
-func OsRelease(host string, config []byte) (string, error) {
+func OsRelease(hostName string, config []byte) (string, error) {
 	var os osRelease
 	err := json.Unmarshal(config, &os)
 	if err != nil {
@@ -21,7 +21,7 @@ func OsRelease(host string, config []byte) (string, error) {
 	}
 
 	cmd := "cat /etc/os-release"
-	out, err := helper.Ssh(host, cmd)
+	out, err := helper.Ssh(hostName, cmd)
 	if err != nil {
 		return fmt.Sprintf("ssh %q: %s", cmd, err), nil
 	}

@@ -1,3 +1,4 @@
+// Smoke is a simple tool for running basic sanity tests against one or more hosts.
 package main
 
 import (

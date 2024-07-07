@@ -12,7 +12,7 @@ type helmReleases struct {
 	Count int
 }
 
-func HelmReleases(host string, config []byte) (string, error) {
+func HelmReleases(hostName string, config []byte) (string, error) {
 	var hr helmReleases
 	err := json.Unmarshal(config, &hr)
 	if err != nil {
@@ -20,7 +20,7 @@ func HelmReleases(host string, config []byte) (string, error) {
 	}
 
 	cmd := "helm ls -A"
-	out, err := helper.Ssh(host, cmd)
+	out, err := helper.Ssh(hostName, cmd)
 	if err != nil {
 		return fmt.Sprintf("ssh %q: %s", cmd, err), nil
 	}
