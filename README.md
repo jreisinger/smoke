@@ -13,6 +13,7 @@ Create config file containing tests for one or more hosts
 ```json
 {
   "some.host.example.com": {
+    "FilesPresent": ["/etc/hosts", "/etc/passwd"],
     "HelmReleases": {
       "Count": 2
     },
@@ -35,11 +36,13 @@ Run the tests - exit code is the number of failed tests
 
 ```sh
 $ smoke
-fail HelmReleases on some.host.example.com: ssh "helm ls -A": failed to run: Process exited with status 127
-ok   HttpsGet on some.host.example.com
-ok   OpenPorts on some.host.example.com
-fail OsRelease on some.host.example.com: want VERSION_ID="22.04", got VERSION_ID="20.04"
-ok   PodsNotRunning on some.host.example.com
+--- some.host.example.com ---
+ok   FilesPresent
+fail HelmReleases: ssh "helm ls -A": failed to run: Process exited with status 127
+ok   HttpsGet
+ok   OpenPorts
+fail OsRelease: want VERSION_ID="22.04", got VERSION_ID="20.04"
+ok   PodsNotRunning
 $ echo $?
 2
 ```
@@ -50,5 +53,5 @@ It's easy to add a new test:
 
 * write function of type `tests.TestFunc`
 * add it to `tests.Available`
-* test it `make && smoke`
+* test, install and run it: `make && smoke`
 * update config file and smoke output in the Usage section above

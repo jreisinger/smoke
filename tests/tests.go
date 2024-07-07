@@ -15,6 +15,7 @@ type ConfigFile map[hostName]map[testName]json.RawMessage
 type TestFunc func(hostName string, config []byte) (failedReason string, err error)
 
 var Available = map[testName]TestFunc{
+	"FilesPresent":   FilesPresent,
 	"HelmReleases":   HelmReleases,
 	"HttpsGet":       HttpsGet,
 	"OpenPorts":      OpenPorts,
