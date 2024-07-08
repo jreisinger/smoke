@@ -22,8 +22,10 @@ func HttpsGet(hostName string, config []byte) (string, error) {
 		return "", err
 	}
 	defer resp.Body.Close()
+
+	msg := fmt.Sprintf("%s -> %d (want %d)", u, resp.StatusCode, hg.StatusCode)
 	if resp.StatusCode != hg.StatusCode {
-		return fmt.Sprintf("want %d, got %d", hg.StatusCode, resp.StatusCode), nil
+		return msg, err
 	}
-	return "", nil
+	return msg, nil
 }

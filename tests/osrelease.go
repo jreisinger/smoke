@@ -35,5 +35,5 @@ func OsRelease(hostName string, config []byte) (string, error) {
 			return out, nil
 		}
 	}
-	return "", nil
+	return fmt.Sprintf("ID=%s, VERSION_ID=%s", os.ID, os.VERSION_ID), nil
 }

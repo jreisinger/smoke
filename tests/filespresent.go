@@ -22,5 +22,5 @@ func FilesPresent(hostName string, config []byte) (string, error) {
 		return fmt.Sprintf("ssh %q: %s", cmd, err), nil
 	}
 
-	return "", nil
+	return strings.Join(files, ", "), nil
 }

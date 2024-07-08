@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+	"strings"
 	"time"
 )
 
@@ -23,5 +24,5 @@ func OpenPorts(hostName string, config []byte) (string, error) {
 		}
 		conn.Close()
 	}
-	return "", nil
+	return strings.Join(op, ", "), nil
 }

@@ -27,9 +27,9 @@ func HelmReleases(hostName string, config []byte) (string, error) {
 	lines := strings.Split(string(out), "\n")
 	releases := len(lines) - 2 // don't count header line and last empty line
 	if releases != hr.Count {
-		out := fmt.Sprintf("want %d, got %d", hr.Count, releases)
+		out := fmt.Sprintf("want count %d, got count %d", hr.Count, releases)
 		return out, nil
 	}
 
-	return "", nil
+	return fmt.Sprintf("count %d", hr.Count), nil
 }

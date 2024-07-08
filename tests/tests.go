@@ -12,7 +12,7 @@ type testName string
 
 type ConfigFile map[hostName]map[testName]json.RawMessage
 
-type TestFunc func(hostName string, config []byte) (failedReason string, err error)
+type TestFunc func(hostName string, config []byte) (msg string, err error)
 
 var Available = map[testName]TestFunc{
 	"FilesPresent":   FilesPresent,
@@ -24,9 +24,9 @@ var Available = map[testName]TestFunc{
 }
 
 type test struct {
-	name         string
-	failedReason string
-	err          error
+	name string
+	msg  string
+	err  error
 }
 
 func Run(configFilename string) (failed int, err error) {
@@ -54,7 +54,7 @@ func Run(configFilename string) (failed int, err error) {
 			go func(testName, host string, testConfig []byte) {
 				var t test
 				t.name = testName
-				t.failedReason, t.err = testFunc(host, testConfig)
+				t.msg, t.err = testFunc(host, testConfig)
 				ch <- t
 			}(string(testName), string(host), testConfig)
 		}
@@ -62,27 +62,13 @@ func Run(configFilename string) (failed int, err error) {
 		for range tests {
 			t := <-ch
 			if t.err != nil {
-				return 0, fmt.Errorf("run test %s against %s: %v", t.name, host, t.err)
-			}
-			if t.failedReason != "" {
 				failed++
-				printFail(t)
+				fmt.Printf("fail %s: %s\n", t.name, t.msg)
 			} else {
-				printOk(t)
+				fmt.Printf("ok   %s: %s\n", t.name, t.msg)
 			}
 		}
 	}
 
 	return failed, nil
-}
-
-func printFail(t test) {
-	msg := fmt.Sprintf("fail %s", t.name)
-	msg += fmt.Sprintf(": %s", t.failedReason)
-	fmt.Println(msg)
-}
-
-func printOk(t test) {
-	msg := fmt.Sprintf("ok   %s", t.name)
-	fmt.Println(msg)
 }
