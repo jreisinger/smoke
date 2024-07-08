@@ -8,10 +8,10 @@ import (
 	"time"
 )
 
-type openPorts []string
+type portsOpen []string
 
-func OpenPorts(hostName string, config []byte) (string, error) {
-	var op openPorts
+func PortsOpen(hostName string, config []byte) (string, error) {
+	var op portsOpen
 	if err := json.Unmarshal(config, &op); err != nil {
 		return "", fmt.Errorf("unmarshal OpenPorts config: %v", err)
 	}

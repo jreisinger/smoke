@@ -18,7 +18,7 @@ var Available = map[testName]TestFunc{
 	"FilesPresent":       FilesPresent,
 	"HelmReleases":       HelmReleases,
 	"HttpsGetStatusCode": HttpsGetStatusCode,
-	"OpenPorts":          OpenPorts,
+	"PortsOpen":          PortsOpen,
 	"OsRelease":          OsRelease,
 	"PodsNotRunning":     PodsNotRunning,
 }

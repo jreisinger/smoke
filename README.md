@@ -16,7 +16,7 @@ Create config file containing tests for one or more hosts
     "FilesPresent": ["/etc/passwd"],
     "HelmReleases": 2,
     "HttpsGetStatusCode": 200,
-    "OpenPorts": ["22", "443"],
+    "PortsOpen": ["22", "443"],
     "OsRelease": {
       "ID": "ubuntu",
       "VERSION_ID": "\"20.04\""
@@ -31,7 +31,7 @@ Run the tests - exit code is the number of failed tests
 ```sh
 $ smoke
 --- some.host.example.com ---
-ok   OpenPorts: 22, 443
+ok   PortsOpen: 22, 443
 ok   HttpsGetStatusCode: 200
 fail OsRelease: want VERSION_ID="22.04", got VERSION_ID="20.04"
 ok   FilesPresent: /etc/passwd
