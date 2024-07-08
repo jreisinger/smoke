@@ -15,6 +15,18 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
+func StringSlicesEqual(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
 func CountNonEmptyLines(input []byte) int {
 	var count int
 	lines := strings.Split(string(input), "\n")

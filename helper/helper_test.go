@@ -25,3 +25,25 @@ func TestCountNonEmptyLines(t *testing.T) {
 		}
 	}
 }
+func TestStringSlicesEqual(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		a    []string
+		b    []string
+		want bool
+	}{
+		{a: []string{"apple", "banana", "cherry"}, b: []string{"apple", "banana", "cherry"}, want: true},
+		{a: []string{"apple", "banana", "cherry"}, b: []string{"apple", "banana"}, want: false},
+		{a: []string{"apple", "banana"}, b: []string{"apple", "banana", "cherry"}, want: false},
+		{a: []string{"apple", "banana", "cherry"}, b: []string{"apple", "orange", "cherry"}, want: false},
+		{a: []string{}, b: []string{}, want: true},
+	}
+
+	for i, tc := range testCases {
+		got := StringSlicesEqual(tc.a, tc.b)
+		if tc.want != got {
+			t.Errorf("tc %d: want %v, got %v", i, tc.want, got)
+		}
+	}
+}

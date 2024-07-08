@@ -21,6 +21,7 @@ var Available = map[testName]TestFunc{
 	"PortsOpen":          PortsOpen,
 	"OsRelease":          OsRelease,
 	"PodsNotRunning":     PodsNotRunning,
+	"ResolvesToAddrs":    ResolvesToAddrs,
 }
 
 type test struct {
