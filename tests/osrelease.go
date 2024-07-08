@@ -13,27 +13,28 @@ type osRelease struct {
 	VERSION_ID string
 }
 
-func OsRelease(hostName string, config []byte) (string, error) {
+func OsRelease(hostName string, config []byte) (string, bool) {
 	var os osRelease
 	if err := json.Unmarshal(config, &os); err != nil {
-		return "", fmt.Errorf("unmarshal OsRelease config: %v", err)
+		return fmt.Sprintf("unmarshal OsRelease config: %v", err), false
 	}
 
 	cmd := "cat /etc/os-release"
 	out, err := helper.Ssh(hostName, cmd)
 	if err != nil {
-		return fmt.Sprintf("ssh %q: %s", cmd, err), err
+		return fmt.Sprintf("ssh %q: %s", cmd, err), false
 	}
 	for _, line := range strings.Split(string(out), "\n") {
 		parts := strings.Split(line, "=")
 		if parts[0] == "ID" && parts[1] != os.ID {
-			out := fmt.Sprintf("want ID=%s, got ID=%s", os.ID, parts[1])
-			return out, fmt.Errorf("wrong ID")
+			msg := fmt.Sprintf("want ID=%s, got ID=%s", os.ID, parts[1])
+			return msg, false
 		}
 		if parts[0] == "VERSION_ID" && parts[1] != os.VERSION_ID {
-			out := fmt.Sprintf("want VERSION_ID=%s, got VERSION_ID=%s", os.VERSION_ID, parts[1])
-			return out, fmt.Errorf("wrong VERSION_ID")
+			msg := fmt.Sprintf("want VERSION_ID=%s, got VERSION_ID=%s", os.VERSION_ID, parts[1])
+			return msg, false
 		}
 	}
-	return fmt.Sprintf("ID=%s, VERSION_ID=%s", os.ID, os.VERSION_ID), nil
+
+	return fmt.Sprintf("ID=%s, VERSION_ID=%s", os.ID, os.VERSION_ID), true
 }

@@ -9,23 +9,23 @@ import (
 
 type podsNotRunning int
 
-func PodsNotRunning(hostName string, config []byte) (string, error) {
+func PodsNotRunning(hostName string, config []byte) (string, bool) {
 	var pnr podsNotRunning
 	if err := json.Unmarshal(config, &pnr); err != nil {
-		return "", fmt.Errorf("unmarshal NonRunningPods config: %v", err)
+		return fmt.Sprintf("unmarshal NonRunningPods config: %v", err), true
 	}
 
 	cmd := "kubectl get pods --field-selector status.phase!=Running,status.phase!=Succeeded --all-namespaces --no-headers"
 	out, err := helper.Ssh(hostName, cmd)
 	if err != nil {
-		return fmt.Sprintf("ssh %q: %s", cmd, err), nil
+		return fmt.Sprintf("ssh %q: %s", cmd, err), false
 	}
 
 	podsNotRunning := helper.CountNonEmptyLines(out)
 	if podsNotRunning != int(pnr) {
 		out := fmt.Sprintf("want count %d, got count %d", pnr, podsNotRunning)
-		return out, fmt.Errorf("wrong number of pods in non-Running phase")
+		return out, false
 	}
 
-	return fmt.Sprintf("%d", pnr), nil
+	return fmt.Sprintf("%d", pnr), true
 }

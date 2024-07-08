@@ -8,22 +8,23 @@ import (
 
 type httpsGetStatusCode int
 
-func HttpsGetStatusCode(hostName string, config []byte) (string, error) {
+func HttpsGetStatusCode(hostName string, config []byte) (string, bool) {
 	var code httpsGetStatusCode
 	if err := json.Unmarshal(config, &code); err != nil {
-		return "", fmt.Errorf("unmarshal HttpsGet config: %v", err)
+		return fmt.Sprintf("unmarshal HttpsGet config: %v", err), false
 	}
 
 	u := fmt.Sprintf("https://%s", hostName)
 	resp, err := http.Get(u)
-	msg := fmt.Sprintf("%d, want %d", resp.StatusCode, code)
 	if err != nil {
-		return msg, err
+		return err.Error(), false
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != int(code) {
-		return msg, fmt.Errorf("wrong status code")
+		msg := fmt.Sprintf("%d, want %d", resp.StatusCode, code)
+		return msg, false
 	}
-	return fmt.Sprintf("%d", code), nil
+
+	return fmt.Sprintf("%d", code), true
 }

@@ -12,7 +12,7 @@ type testName string
 
 type ConfigFile map[hostName]map[testName]json.RawMessage
 
-type TestFunc func(hostName string, config []byte) (msg string, err error)
+type TestFunc func(hostName string, testConfig []byte) (msg string, ok bool)
 
 var Available = map[testName]TestFunc{
 	"FilesPresent":       FilesPresent,
@@ -26,7 +26,7 @@ var Available = map[testName]TestFunc{
 type test struct {
 	name string
 	msg  string
-	err  error
+	ok   bool
 }
 
 func Run(configFilename string) (failed int, err error) {
@@ -54,14 +54,14 @@ func Run(configFilename string) (failed int, err error) {
 			go func(testName, host string, testConfig []byte) {
 				var t test
 				t.name = testName
-				t.msg, t.err = testFunc(host, testConfig)
+				t.msg, t.ok = testFunc(host, testConfig)
 				ch <- t
 			}(string(testName), string(host), testConfig)
 		}
 
 		for range tests {
 			t := <-ch
-			if t.err != nil {
+			if !t.ok {
 				failed++
 				fmt.Printf("fail %s: %s\n", t.name, t.msg)
 			} else {
