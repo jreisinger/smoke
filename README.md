@@ -2,7 +2,7 @@ Smoke is a simple tool for running basic sanity tests against one or more hosts.
 
 ## Installation
 
-```sh
+```
 go install github.com/jreisinger/smoke@latest
 ```
 
@@ -29,7 +29,7 @@ Create config file containing tests for one or more hosts
 
 Run the tests - exit code is the number of failed tests
 
-```sh
+```
 $ smoke
 --- example.com ---
 ok   PortsOpen: 22, 443
