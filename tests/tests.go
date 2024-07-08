@@ -15,12 +15,12 @@ type ConfigFile map[hostName]map[testName]json.RawMessage
 type TestFunc func(hostName string, config []byte) (msg string, err error)
 
 var Available = map[testName]TestFunc{
-	"FilesPresent":   FilesPresent,
-	"HelmReleases":   HelmReleases,
-	"HttpsGet":       HttpsGet,
-	"OpenPorts":      OpenPorts,
-	"OsRelease":      OsRelease,
-	"PodsNotRunning": PodsNotRunning,
+	"FilesPresent":       FilesPresent,
+	"HelmReleases":       HelmReleases,
+	"HttpsGetStatusCode": HttpsGetStatusCode,
+	"OpenPorts":          OpenPorts,
+	"OsRelease":          OsRelease,
+	"PodsNotRunning":     PodsNotRunning,
 }
 
 type test struct {

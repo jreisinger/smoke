@@ -7,9 +7,7 @@ import (
 	"github.com/jreisinger/smoke/helper"
 )
 
-type podsNotRunning struct {
-	Count int
-}
+type podsNotRunning int
 
 func PodsNotRunning(hostName string, config []byte) (string, error) {
 	var pnr podsNotRunning
@@ -24,10 +22,10 @@ func PodsNotRunning(hostName string, config []byte) (string, error) {
 	}
 
 	podsNotRunning := helper.CountNonEmptyLines(out)
-	if podsNotRunning != pnr.Count {
-		out := fmt.Sprintf("want count %d, got count %d", pnr.Count, podsNotRunning)
+	if podsNotRunning != int(pnr) {
+		out := fmt.Sprintf("want count %d, got count %d", pnr, podsNotRunning)
 		return out, nil
 	}
 
-	return fmt.Sprintf("count %d", pnr.Count), nil
+	return fmt.Sprintf("%d", pnr), nil
 }

@@ -13,21 +13,15 @@ Create config file containing tests for one or more hosts
 ```json
 {
   "some.host.example.com": {
-    "FilesPresent": ["/etc/hosts", "/etc/passwd"],
-    "HelmReleases": {
-      "Count": 2
-    },
-    "HttpsGet": {
-      "StatusCode": 200
-    },
+    "FilesPresent": ["/etc/passwd"],
+    "HelmReleases": 2,
+    "HttpsGetStatusCode": 200,
     "OpenPorts": ["22", "443"],
     "OsRelease": {
       "ID": "ubuntu",
       "VERSION_ID": "\"20.04\""
     },
-    "PodsNotRunning": {
-      "Count": 0
-    }
+    "PodsNotRunning": 0
   }
 }
 ```
@@ -37,12 +31,12 @@ Run the tests - exit code is the number of failed tests
 ```sh
 $ smoke
 --- some.host.example.com ---
-ok   FilesPresent
-fail HelmReleases: ssh "helm ls -A": failed to run: Process exited with status 127
-ok   HttpsGet
-ok   OpenPorts
+ok   OpenPorts: 22, 443
+ok   HttpsGetStatusCode: 200
 fail OsRelease: want VERSION_ID="22.04", got VERSION_ID="20.04"
-ok   PodsNotRunning
+ok   FilesPresent: /etc/passwd
+ok   PodsNotRunning: 0
+fail HelmReleases: ssh "helm ls -A": failed to run: Process exited with status 127
 $ echo $?
 2
 ```
