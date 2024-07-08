@@ -24,7 +24,7 @@ func PodsNotRunning(hostName string, config []byte) (string, error) {
 	podsNotRunning := helper.CountNonEmptyLines(out)
 	if podsNotRunning != int(pnr) {
 		out := fmt.Sprintf("want count %d, got count %d", pnr, podsNotRunning)
-		return out, nil
+		return out, fmt.Errorf("wrong number of pods in non-Running phase")
 	}
 
 	return fmt.Sprintf("%d", pnr), nil

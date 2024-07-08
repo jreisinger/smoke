@@ -20,7 +20,7 @@ func PortsOpen(hostName string, config []byte) (string, error) {
 		addr := net.JoinHostPort(hostName, port)
 		conn, err := net.DialTimeout("tcp", addr, 5*time.Second)
 		if err != nil {
-			return fmt.Sprintf("can't connect to %s", addr), nil
+			return fmt.Sprintf("can't connect to %s", addr), err
 		}
 		conn.Close()
 	}

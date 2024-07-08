@@ -19,14 +19,14 @@ func HelmReleases(hostName string, config []byte) (string, error) {
 	cmd := "helm ls -A"
 	out, err := helper.Ssh(hostName, cmd)
 	if err != nil {
-		return fmt.Sprintf("ssh %q: %s", cmd, err), nil
+		return fmt.Sprintf("ssh %q: %s", cmd, err), err
 	}
 
 	lines := strings.Split(string(out), "\n")
 	releases := len(lines) - 2 // don't count header line and last empty line
 	if releases != int(hr) {
 		out := fmt.Sprintf("want count %d, got count %d", hr, releases)
-		return out, nil
+		return out, fmt.Errorf("wrong number of helm releases")
 	}
 
 	return fmt.Sprintf("%d", hr), nil

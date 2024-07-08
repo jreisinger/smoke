@@ -16,14 +16,14 @@ func HttpsGetStatusCode(hostName string, config []byte) (string, error) {
 
 	u := fmt.Sprintf("https://%s", hostName)
 	resp, err := http.Get(u)
+	msg := fmt.Sprintf("%d, want %d", resp.StatusCode, code)
 	if err != nil {
-		return "", err
+		return msg, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != int(code) {
-		msg := fmt.Sprintf("%d, want %d", resp.StatusCode, code)
-		return msg, err
+		return msg, fmt.Errorf("wrong status code")
 	}
 	return fmt.Sprintf("%d", code), nil
 }

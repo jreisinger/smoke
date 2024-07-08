@@ -22,17 +22,17 @@ func OsRelease(hostName string, config []byte) (string, error) {
 	cmd := "cat /etc/os-release"
 	out, err := helper.Ssh(hostName, cmd)
 	if err != nil {
-		return fmt.Sprintf("ssh %q: %s", cmd, err), nil
+		return fmt.Sprintf("ssh %q: %s", cmd, err), err
 	}
 	for _, line := range strings.Split(string(out), "\n") {
 		parts := strings.Split(line, "=")
 		if parts[0] == "ID" && parts[1] != os.ID {
 			out := fmt.Sprintf("want ID=%s, got ID=%s", os.ID, parts[1])
-			return out, nil
+			return out, fmt.Errorf("wrong ID")
 		}
 		if parts[0] == "VERSION_ID" && parts[1] != os.VERSION_ID {
 			out := fmt.Sprintf("want VERSION_ID=%s, got VERSION_ID=%s", os.VERSION_ID, parts[1])
-			return out, nil
+			return out, fmt.Errorf("wrong VERSION_ID")
 		}
 	}
 	return fmt.Sprintf("ID=%s, VERSION_ID=%s", os.ID, os.VERSION_ID), nil

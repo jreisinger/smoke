@@ -19,7 +19,7 @@ func FilesPresent(hostName string, config []byte) (string, error) {
 	cmd := fmt.Sprintf("ls -l %s", strings.Join(files, " "))
 	_, err := helper.Ssh(hostName, cmd)
 	if err != nil {
-		return fmt.Sprintf("ssh %q: %s", cmd, err), nil
+		return fmt.Sprintf("ssh %q: %s", cmd, err), err
 	}
 
 	return strings.Join(files, ", "), nil
